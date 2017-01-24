@@ -7,13 +7,7 @@
 </head>
 <body ng-app="myApp" ng-cloak>
 
-<md-toolbar md-scroll-shrink ng-if="true" ng-controller="TitleController">
-    <div class="md-toolbar-tools">
-        <h3>
-            <span>Angular Demo</span>
-        </h3>
-    </div>
-</md-toolbar>
+
 
 <div ng-controller="SideMenu" layout="column" style="height:100%;" ng-cloak>
 
@@ -40,7 +34,15 @@
 
         </md-sidenav>
 
+
         <md-content flex layout-padding>
+            <md-toolbar md-scroll-shrink ng-if="true" ng-controller="TitleController">
+                <div class="md-toolbar-tools">
+                    <h3>
+                        <span>Angular Demo</span>
+                    </h3>
+                </div>
+            </md-toolbar>
 
             <div layout="column" layout-align="top center">
                 <p>
