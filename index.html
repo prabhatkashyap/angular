@@ -573,14 +573,14 @@
                     };
                 });
 
-        function DemoCtrl($timeout, $q, $log, $mdDialog) {
+        function DemoCtrl($timeout, $q, $log, $mdDialog, $http) {
             var self = this;
 
             self.simulateQuery = false;
             self.isDisabled = false;
 
             // list of `state` value/display objects
-            self.states = loadAllStates();
+            self.states = loadAllStates($http);
             self.querySearch = querySearch;
             self.selectedItemChange = selectedItemChange;
             self.searchTextChange = searchTextChange;
@@ -666,9 +666,14 @@
             /**
              * Build `states` list of key/value pairs
              */
-            function loadAllStates() {
+            function loadAllStates($http) {
                 console.log("////Inside loadAllStates//////")
                 var allStates = 'State 1, State 2, State 3';
+                $http.get("http://api-dtserv.rhcloud.com/states")
+                        .then(function (response) {
+                            console.log(response.data)
+//                            $scope.myWelcome = response.data;
+                        });
 
                 return allStates.split(/, +/g).map(function (state) {
                     return {

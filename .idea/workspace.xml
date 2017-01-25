@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e0f82566-d08b-4422-9b83-7e1572e9dcf9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="angular.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,8 +27,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.2763819">
-              <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
+            <state vertical-scroll-proportion="0.4589615">
+              <caret line="673" column="53" selection-start-line="673" selection-start-column="53" selection-end-line="673" selection-end-column="53" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#md-sidenav#0;n#section#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -35,16 +36,6 @@
                 <element signature="n#style#0;n#h1#0;n#header#0;n#md-content#0;n#md-sidenav#0;n#section#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#md-content#0;n#div#4;n#div#0;n#md-content#0;n#section#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="angular-material.min.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/angular-material.min.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="5349" selection-start-line="12" selection-start-column="5349" selection-end-line="12" selection-end-column="5349" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -511,7 +502,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/angular-material.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="38.006756">
           <caret line="12" column="5349" selection-start-line="12" selection-start-column="5349" selection-end-line="12" selection-end-column="5349" />
           <folding />
         </state>
@@ -519,8 +510,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.2763819">
-          <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
+        <state vertical-scroll-proportion="0.4589615">
+          <caret line="673" column="53" selection-start-line="673" selection-start-column="53" selection-end-line="673" selection-end-column="53" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#md-sidenav#0;n#section#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
