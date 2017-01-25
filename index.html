@@ -97,17 +97,17 @@
                                 <md-autocomplete flex
                                                  ng-disabled="ctrl.isDisabled"
                                                  md-no-cache="ctrl.noCache"
-                                                 md-selected-item="ctrl.selectedItem"
-                                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                                                 md-search-text="ctrl.searchText"
-                                                 md-selected-item-change="ctrl.selectedItemChange(item)"
-                                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
-                                                 md-item-text="item.display"
+                                                 md-selected-item="ctrl.citySelectedItem"
+                                                 md-search-text-change="ctrl.citySearchTextChange(ctrl.citySearchText)"
+                                                 md-search-text="ctrl.citySearchText"
+                                                 md-selected-item-change="ctrl.citySelectedItemChange(item)"
+                                                 md-items="item in ctrl.cityQuerySearch(ctrl.citySearchText)"
+                                                 md-item-text="item.cityDisplay"
                                                  md-min-length="0"
                                                  placeholder="What is your favorite US state?">
                                     <md-item-template>
                                     <span md-highlight-text="ctrl.searchText"
-                                          md-highlight-flags="^i">{{item.display}}</span>
+                                          md-highlight-flags="^i">{{item.cityDisplay}}</span>
                                     </md-item-template>
                                     <md-not-found>
                                         No states matching "{{ctrl.searchText}}" were found.
@@ -117,17 +117,17 @@
                                 <md-autocomplete flex
                                                  ng-disabled="ctrl.isDisabled"
                                                  md-no-cache="ctrl.noCache"
-                                                 md-selected-item="ctrl.selectedItem"
-                                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                                                 md-search-text="ctrl.searchText"
-                                                 md-selected-item-change="ctrl.selectedItemChange(item)"
-                                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
-                                                 md-item-text="item.display"
+                                                 md-selected-item="ctrl.districtSelectedItem"
+                                                 md-search-text-change="ctrl.districtSearchTextChange(ctrl.districtSearchText)"
+                                                 md-search-text="ctrl.districtSearchText"
+                                                 md-selected-item-change="ctrl.districtSelectedItemChange(item)"
+                                                 md-items="item in ctrl.districtQuerySearch(ctrl.districtSearchText)"
+                                                 md-item-text="item.districtDisplay"
                                                  md-min-length="0"
                                                  placeholder="What is your favorite US state?">
                                     <md-item-template>
-                                    <span md-highlight-text="ctrl.searchText"
-                                          md-highlight-flags="^i">{{item.display}}</span>
+                                    <span md-highlight-text="ctrl.districtSearchText"
+                                          md-highlight-flags="^i">{{item.districtDisplay}}</span>
                                     </md-item-template>
                                     <md-not-found>
                                         No states matching "{{ctrl.searchText}}" were found.
@@ -523,15 +523,20 @@
             self.isDisabled = false;
 
             // list of `state` value/display objects
-            self.states = loadAll();
+            self.states = loadAllStates();
             self.querySearch = querySearch;
             self.selectedItemChange = selectedItemChange;
             self.searchTextChange = searchTextChange;
 
             self.cities = loadAllCities();
-            self.cityQuerySearch = querySearch;
+            self.cityQuerySearch = cityQuerySearch;
             self.citySelectedItemChange = selectedItemChange;
             self.citySearchTextChange = searchTextChange;
+
+            self.districts = loadAllDistricts();
+            self.districtQuerySearch = districtQuerySearch;
+            self.districtSelectedItemChange = selectedItemChange;
+            self.districtSearchTextChange = searchTextChange;
 
             self.newState = newState;
 
@@ -548,6 +553,7 @@
              * remote dataservice call.
              */
             function querySearch(query) {
+                console.log("Inside Query Search////")
                 var results = query ? self.states.filter(createFilterFor(query)) : self.states,
                         deferred;
                 if (self.simulateQuery) {
@@ -561,6 +567,37 @@
                 }
             }
 
+            function cityQuerySearch(query) {
+                console.log("Inside City Query Search////")
+                var results = query ? self.cities.filter(createFilterFor(query)) : self.cities,
+                        deferred;
+                if (self.simulateQuery) {
+                    deferred = $q.defer();
+                    $timeout(function () {
+                        deferred.resolve(results);
+                    }, Math.random() * 1000, false);
+                    return deferred.promise;
+                } else {
+                    return results;
+                }
+            }
+
+            function districtQuerySearch(query) {
+                console.log("Inside districtQuerySearch////")
+                var results = query ? self.districts.filter(createFilterFor(query)) : self.districts,
+                        deferred;
+                if (self.simulateQuery) {
+                    deferred = $q.defer();
+                    $timeout(function () {
+                        deferred.resolve(results);
+                    }, Math.random() * 1000, false);
+                    return deferred.promise;
+                } else {
+                    return results;
+                }
+            }
+
+
             function searchTextChange(text) {
                 $log.info('Text changed to ' + text);
             }
@@ -572,14 +609,9 @@
             /**
              * Build `states` list of key/value pairs
              */
-            function loadAll() {
-                var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-              Wisconsin, Wyoming';
+            function loadAllStates() {
+                console.log("////Inside loadAllStates//////")
+                var allStates = 'State 1, State 2, State 3';
 
                 return allStates.split(/, +/g).map(function (state) {
                     return {
@@ -590,12 +622,27 @@
             }
 
             function loadAllCities() {
-                var allStates = 'City 1,City 2,City 3';
+                console.log("////Inside loadAllCities//////")
 
-                return allStates.split(/, +/g).map(function (state) {
+                var allStates = 'City 1, City 2, City 3';
+
+                return allStates.split(/, +/g).map(function (city) {
                     return {
-                        value: state.toLowerCase(),
-                        display: state
+                        value: city.toLowerCase(),
+                        cityDisplay: city
+                    };
+                });
+            }
+
+            function loadAllDistricts() {
+                console.log("////Inside loadAllDistricts//////")
+
+                var allStates = 'District 1, District 2, District 3';
+
+                return allStates.split(/, +/g).map(function (district) {
+                    return {
+                        value: district.toLowerCase(),
+                        districtDisplay: district
                     };
                 });
             }
