@@ -662,6 +662,8 @@
 
             function selectedItemChange(item) {
 //                $log.info('Item changed to ' + JSON.stringify(item));
+                self.citySearchText = "";
+                self.districtSearchText = "";
                 if (item) {
                     self.selectedStateId = item.id
 //                    console.log(searchCityFromState(item.id))
