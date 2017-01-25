@@ -573,7 +573,7 @@
                     };
                 });
 
-        function DemoCtrl($timeout, $q, $log, $mdDialog, $http) {
+        function DemoCtrl($timeout, $q, $log, $mdDialog, $http, filterFilter) {
             var self = this;
 
             self.simulateQuery = false;
@@ -609,9 +609,8 @@
              * Search for states... use $timeout to simulate
              * remote dataservice call.
              */
-            function querySearch(query) {
+            function querySearch(query, filterFilter) {
                 console.log("Inside Query Search////" + query)
-                console.log(self.states)
                 var results = query ? self.states.filter(stateCreateFilterFor(query)) : self.states,
                         deferred;
                 if (self.simulateQuery) {
@@ -674,7 +673,8 @@
                         .then(function (response) {
 //                            console.log(response.data)
 //                            var list = response.data
-                            return response.data
+                            self.states = response.data;
+//                            return response.data
                         });
 
 
@@ -694,7 +694,9 @@
                         .then(function (response) {
 //                            console.log(response.data)
 //                            var list = response.data
-                            return response.data
+//                            return response.data
+                            self.cities = response.data;
+
                         });
 
 //                return allStates.split(/, +/g).map(function (city) {
@@ -712,7 +714,8 @@
                         .then(function (response) {
 //                            console.log(response.data)
 //                            var list = response.data
-                            return response.data
+//                            return response.data
+                            self.districts = response.data;
                         });
 
 //                var allStates = 'District 1, District 2, District 3';
@@ -732,7 +735,7 @@
                 var lowercaseQuery = angular.lowercase(query);
 
                 return function filterFn(state) {
-                    return (state.value.indexOf(lowercaseQuery) === 0);
+                    return (angular.lowercase(state.stateName).indexOf(lowercaseQuery) === 0);
                 };
 
             }
@@ -740,8 +743,8 @@
             function cityCreateFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
 
-                return function filterFn(state) {
-                    return (state.value.indexOf(lowercaseQuery) === 0);
+                return function filterFn(city) {
+                    return (angular.lowercase(city.cityName).indexOf(lowercaseQuery) === 0);
                 };
 
             }
@@ -749,8 +752,8 @@
             function districtCreateFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
 
-                return function filterFn(state) {
-                    return (state.value.indexOf(lowercaseQuery) === 0);
+                return function filterFn(district) {
+                    return (angular.lowercase(district.districtName).indexOf(lowercaseQuery) === 0);
                 };
 
             }
