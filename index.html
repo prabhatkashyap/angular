@@ -670,7 +670,7 @@
             function loadAllStates($http) {
                 console.log("////Inside loadAllStates//////")
                 var allStates = '';
-                return $http.get("http://api-dtserv.rhcloud.com/state")
+                return $http.get("//api-dtserv.rhcloud.com/state")
                         .then(function (response) {
 //                            console.log(response.data)
 //                            var list = response.data
@@ -690,7 +690,7 @@
                 console.log("////Inside loadAllCities//////")
 
                 var allCities = '';
-                return $http.get("http://api-dtserv.rhcloud.com/city")
+                return $http.get("//api-dtserv.rhcloud.com/city")
                         .then(function (response) {
 //                            console.log(response.data)
 //                            var list = response.data
@@ -708,7 +708,7 @@
             function loadAllDistricts() {
                 console.log("////Inside loadAllDistricts//////")
                 var allDistricts = '';
-                return $http.get("http://api-dtserv.rhcloud.com/district")
+                return $http.get("//api-dtserv.rhcloud.com/district")
                         .then(function (response) {
 //                            console.log(response.data)
 //                            var list = response.data
