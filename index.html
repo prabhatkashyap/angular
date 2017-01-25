@@ -139,12 +139,12 @@
                                                  md-search-text="ctrl.searchText"
                                                  md-selected-item-change="ctrl.selectedItemChange(item)"
                                                  md-items="item in ctrl.querySearch(ctrl.searchText)"
-                                                 md-item-text="item.display"
+                                                 md-item-text="item.stateName"
                                                  md-min-length="0"
-                                                 placeholder="What is your favorite US state?">
+                                                 placeholder="Select State">
                                     <md-item-template>
                                     <span md-highlight-text="ctrl.searchText"
-                                          md-highlight-flags="^i">{{item.display}}</span>
+                                          md-highlight-flags="^i">{{item.stateName}}</span>
                                     </md-item-template>
                                     <md-not-found>
                                         No states matching "{{ctrl.searchText}}" were found.
@@ -159,16 +159,16 @@
                                                  md-search-text="ctrl.citySearchText"
                                                  md-selected-item-change="ctrl.citySelectedItemChange(item)"
                                                  md-items="item in ctrl.cityQuerySearch(ctrl.citySearchText)"
-                                                 md-item-text="item.cityDisplay"
+                                                 md-item-text="item.cityName"
                                                  md-min-length="0"
-                                                 placeholder="What is your favorite US state?">
+                                                 placeholder="Select City">
                                     <md-item-template>
-                                    <span md-highlight-text="ctrl.searchText"
-                                          md-highlight-flags="^i">{{item.cityDisplay}}</span>
+                                    <span md-highlight-text="ctrl.citySearchText"
+                                          md-highlight-flags="^i">{{item.cityName}}</span>
                                     </md-item-template>
                                     <md-not-found>
-                                        No states matching "{{ctrl.searchText}}" were found.
-                                        <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                                        No states matching "{{ctrl.citySearchText}}" were found.
+                                        <a ng-click="ctrl.newState(ctrl.citySearchText)">Create a new one!</a>
                                     </md-not-found>
                                 </md-autocomplete>
                                 <md-autocomplete flex
@@ -179,16 +179,16 @@
                                                  md-search-text="ctrl.districtSearchText"
                                                  md-selected-item-change="ctrl.districtSelectedItemChange(item)"
                                                  md-items="item in ctrl.districtQuerySearch(ctrl.districtSearchText)"
-                                                 md-item-text="item.districtDisplay"
+                                                 md-item-text="item.districtName"
                                                  md-min-length="0"
-                                                 placeholder="What is your favorite US state?">
+                                                 placeholder="Select District">
                                     <md-item-template>
                                     <span md-highlight-text="ctrl.districtSearchText"
-                                          md-highlight-flags="^i">{{item.districtDisplay}}</span>
+                                          md-highlight-flags="^i">{{item.districtName}}</span>
                                     </md-item-template>
                                     <md-not-found>
-                                        No states matching "{{ctrl.searchText}}" were found.
-                                        <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                                        No states matching "{{ctrl.districtSearchText}}" were found.
+                                        <a ng-click="ctrl.newState(ctrl.citySearchText)">Create a new one!</a>
                                     </md-not-found>
                                 </md-autocomplete>
                             </div>
@@ -585,12 +585,12 @@
             self.selectedItemChange = selectedItemChange;
             self.searchTextChange = searchTextChange;
 
-            self.cities = loadAllCities();
+            self.cities = loadAllCities($http);
             self.cityQuerySearch = cityQuerySearch;
             self.citySelectedItemChange = selectedItemChange;
             self.citySearchTextChange = searchTextChange;
 
-            self.districts = loadAllDistricts();
+            self.districts = loadAllDistricts($http);
             self.districtQuerySearch = districtQuerySearch;
             self.districtSelectedItemChange = selectedItemChange;
             self.districtSearchTextChange = searchTextChange;
@@ -610,8 +610,9 @@
              * remote dataservice call.
              */
             function querySearch(query) {
-                console.log("Inside Query Search////")
-                var results = query ? self.states.filter(createFilterFor(query)) : self.states,
+                console.log("Inside Query Search////" + query)
+                console.log(self.states)
+                var results = query ? self.states.filter(stateCreateFilterFor(query)) : self.states,
                         deferred;
                 if (self.simulateQuery) {
                     deferred = $q.defer();
@@ -626,7 +627,7 @@
 
             function cityQuerySearch(query) {
                 console.log("Inside City Query Search////")
-                var results = query ? self.cities.filter(createFilterFor(query)) : self.cities,
+                var results = query ? self.cities.filter(cityCreateFilterFor(query)) : self.cities,
                         deferred;
                 if (self.simulateQuery) {
                     deferred = $q.defer();
@@ -641,7 +642,7 @@
 
             function districtQuerySearch(query) {
                 console.log("Inside districtQuerySearch////")
-                var results = query ? self.districts.filter(createFilterFor(query)) : self.districts,
+                var results = query ? self.districts.filter(districtCreateFilterFor(query)) : self.districts,
                         deferred;
                 if (self.simulateQuery) {
                     deferred = $q.defer();
@@ -668,51 +669,84 @@
              */
             function loadAllStates($http) {
                 console.log("////Inside loadAllStates//////")
-                var allStates = 'State 1, State 2, State 3';
-                $http.get("http://api-dtserv.rhcloud.com/states")
+                var allStates = '';
+                return $http.get("http://api-dtserv.rhcloud.com/state")
                         .then(function (response) {
-                            console.log(response.data)
-//                            $scope.myWelcome = response.data;
+//                            console.log(response.data)
+//                            var list = response.data
+                            return response.data
                         });
 
-                return allStates.split(/, +/g).map(function (state) {
-                    return {
-                        value: state.toLowerCase(),
-                        display: state
-                    };
-                });
+
+//                return allStates.split(/, +/g).map(function (state) {
+//                    return {
+//                        value: state.toLowerCase(),
+//                        display: state
+//                    };
+//                });
             }
 
             function loadAllCities() {
                 console.log("////Inside loadAllCities//////")
 
-                var allStates = 'City 1, City 2, City 3';
+                var allCities = '';
+                return $http.get("http://api-dtserv.rhcloud.com/city")
+                        .then(function (response) {
+//                            console.log(response.data)
+//                            var list = response.data
+                            return response.data
+                        });
 
-                return allStates.split(/, +/g).map(function (city) {
-                    return {
-                        value: city.toLowerCase(),
-                        cityDisplay: city
-                    };
-                });
+//                return allStates.split(/, +/g).map(function (city) {
+//                    return {
+//                        value: city.toLowerCase(),
+//                        cityDisplay: city
+//                    };
+//                });
             }
 
             function loadAllDistricts() {
                 console.log("////Inside loadAllDistricts//////")
+                var allDistricts = '';
+                return $http.get("http://api-dtserv.rhcloud.com/district")
+                        .then(function (response) {
+//                            console.log(response.data)
+//                            var list = response.data
+                            return response.data
+                        });
 
-                var allStates = 'District 1, District 2, District 3';
-
-                return allStates.split(/, +/g).map(function (district) {
-                    return {
-                        value: district.toLowerCase(),
-                        districtDisplay: district
-                    };
-                });
+//                var allStates = 'District 1, District 2, District 3';
+//
+//                return allStates.split(/, +/g).map(function (district) {
+//                    return {
+//                        value: district.toLowerCase(),
+//                        districtDisplay: district
+//                    };
+//                });
             }
 
             /**
              * Create filter function for a query string
              */
-            function createFilterFor(query) {
+            function stateCreateFilterFor(query) {
+                var lowercaseQuery = angular.lowercase(query);
+
+                return function filterFn(state) {
+                    return (state.value.indexOf(lowercaseQuery) === 0);
+                };
+
+            }
+
+            function cityCreateFilterFor(query) {
+                var lowercaseQuery = angular.lowercase(query);
+
+                return function filterFn(state) {
+                    return (state.value.indexOf(lowercaseQuery) === 0);
+                };
+
+            }
+
+            function districtCreateFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
 
                 return function filterFn(state) {
