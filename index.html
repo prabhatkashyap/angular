@@ -22,20 +22,27 @@
             <!--<h1 class="md-toolbar-tools">Sidenav Left</h1>-->
             <!--</md-toolbar>-->
             <md-content layout-padding ng-controller="LeftCtrl">
-                <md-button ng-click="close()" class="md-primary" hide-gt-md>
-                    Close Sidenav Left
-                </md-button>
-                <p hide show-gt-md>
-                    This sidenav is locked open on your device. To go back to the default behavior,
-                    narrow your display.
-                </p>
+                <!--<md-button ng-click="close()" class="md-primary" hide-gt-md>-->
+                <!--Close Sidenav Left-->
+                <!--</md-button>-->
+                <header class="nav-header">
+                    <a layout="row" layout-align="center center"
+                       ng-href="/" class="docs-logo" href="/">
+                        <img src="http://www.logospike.com/wp-content/uploads/2015/11/Logo_Image_01.png"
+                             style="width: 160px" alt="">
+                    </a>
+
+                    <h1 style="margin: 0px;text-align: center" class="ng-binding">
+                        Angular Demo</h1>
+                </header>
+
             </md-content>
 
         </md-sidenav>
 
 
-        <md-content flex layout-padding>
-            <md-toolbar md-scroll-shrink ng-if="true" ng-controller="TitleController">
+        <md-content flex>
+            <md-toolbar md-scroll-shrink>
                 <div class="md-toolbar-tools">
                     <h3>
                         <span>Angular Demo</span>
@@ -43,7 +50,7 @@
                 </div>
             </md-toolbar>
 
-            <div layout="column" layout-align="top center">
+            <div layout="column" layout-align="top center" layout-padding>
                 <p>
                     The left sidenav will 'lock open' on a medium (>=960px wide) device.
                 </p>
