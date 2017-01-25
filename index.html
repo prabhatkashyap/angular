@@ -573,7 +573,7 @@
                     };
                 });
 
-        function DemoCtrl($timeout, $q, $log, $mdDialog, $http, filterFilter) {
+        function DemoCtrl($timeout, $q, $log, $mdDialog, $http) {
             var self = this;
 
             self.simulateQuery = false;
@@ -581,18 +581,19 @@
 
             // list of `state` value/display objects
             self.states = loadAllStates($http);
+            self.selectedStateId = null;
             self.querySearch = querySearch;
             self.selectedItemChange = selectedItemChange;
             self.searchTextChange = searchTextChange;
 
             self.cities = loadAllCities($http);
             self.cityQuerySearch = cityQuerySearch;
-            self.citySelectedItemChange = selectedItemChange;
+            self.citySelectedItemChange = cityAndDistrictSelectedItemChange;
             self.citySearchTextChange = searchTextChange;
 
             self.districts = loadAllDistricts($http);
             self.districtQuerySearch = districtQuerySearch;
-            self.districtSelectedItemChange = selectedItemChange;
+            self.districtSelectedItemChange = cityAndDistrictSelectedItemChange;
             self.districtSearchTextChange = searchTextChange;
 
             self.newState = newState;
@@ -609,7 +610,7 @@
              * Search for states... use $timeout to simulate
              * remote dataservice call.
              */
-            function querySearch(query, filterFilter) {
+            function querySearch(query) {
                 console.log("Inside Query Search////" + query)
                 var results = query ? self.states.filter(stateCreateFilterFor(query)) : self.states,
                         deferred;
@@ -660,8 +661,41 @@
             }
 
             function selectedItemChange(item) {
-                $log.info('Item changed to ' + JSON.stringify(item));
+//                $log.info('Item changed to ' + JSON.stringify(item));
+                if (item) {
+                    self.selectedStateId = item.id
+//                    console.log(searchCityFromState(item.id))
+//                    console.log(searchDistrictFromState(item.id))
+                } else {
+                    self.selectedStateId = null
+                }
             }
+
+            function cityAndDistrictSelectedItemChange(item) {
+//                $log.info('Item changed to ' + JSON.stringify(item));
+            }
+
+            function createFilterForForCityInState(query) {
+                return function filterFn(city) {
+                    return ((city.stateId == query));
+                };
+            }
+
+            function createFilterForForDistrictInState(query) {
+                return function filterFn(district) {
+                    return (district.stateId == query);
+                };
+            }
+
+            function searchCityFromState(stateId) {
+                return stateId ? self.cities.filter(createFilterForForCityInState(stateId)) : self.cities;
+
+            }
+
+            function searchDistrictFromState(stateId) {
+                return stateId ? self.districts.filter(createFilterForForDistrictInState(stateId)) : self.districts;
+            }
+
 
             /**
              * Build `states` list of key/value pairs
@@ -744,7 +778,12 @@
                 var lowercaseQuery = angular.lowercase(query);
 
                 return function filterFn(city) {
-                    return (angular.lowercase(city.cityName).indexOf(lowercaseQuery) === 0);
+                    console.log("/////self.selectedStateId/////" + self.selectedStateId)
+                    if (self.selectedStateId) {
+                        return ((angular.lowercase(city.cityName).indexOf(lowercaseQuery) === 0) && city.stateId == self.selectedStateId);
+                    } else {
+                        return (angular.lowercase(city.cityName).indexOf(lowercaseQuery) === 0);
+                    }
                 };
 
             }
@@ -753,10 +792,16 @@
                 var lowercaseQuery = angular.lowercase(query);
 
                 return function filterFn(district) {
-                    return (angular.lowercase(district.districtName).indexOf(lowercaseQuery) === 0);
+                    console.log("///self.selectedStateId////" + self.selectedStateId)
+                    if (self.selectedStateId) {
+                        return ((angular.lowercase(district.districtName).indexOf(lowercaseQuery) === 0) && district.stateId == self.selectedStateId);
+                    } else {
+                        return (angular.lowercase(district.districtName).indexOf(lowercaseQuery) === 0);
+                    }
                 };
 
             }
+
 
             self.openDialog = function ($event) {
                 $mdDialog.show({
@@ -794,6 +839,7 @@
                  * Search for states... use $timeout to simulate
                  * remote dataservice call.
                  */
+
                 function querySearch(query) {
                     return query ? self.states.filter(createFilterFor(query)) : self.states;
                 }
