@@ -8,13 +8,12 @@
 <body ng-app="myApp" ng-cloak>
 
 
-
 <div ng-controller="SideMenu" layout="column" style="height:100%;" ng-cloak>
 
     <section layout="row" flex>
 
         <md-sidenav
-                class="md-sidenav-left"  style="width: 260px !important;"
+                class="md-sidenav-left" style="width: 260px !important;"
                 md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-md')"
                 md-whiteframe="4">
@@ -72,26 +71,70 @@
                         <form ng-submit="$event.preventDefault()">
                             <p>Use <code>md-autocomplete</code> to search for matches from local or remote data sources.
                             </p>
-                            <md-autocomplete
-                                    ng-disabled="ctrl.isDisabled"
-                                    md-no-cache="ctrl.noCache"
-                                    md-selected-item="ctrl.selectedItem"
-                                    md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                                    md-search-text="ctrl.searchText"
-                                    md-selected-item-change="ctrl.selectedItemChange(item)"
-                                    md-items="item in ctrl.querySearch(ctrl.searchText)"
-                                    md-item-text="item.display"
-                                    md-min-length="0"
-                                    placeholder="What is your favorite US state?">
-                                <md-item-template>
+
+                            <div layout="row" layout-margin>
+
+                                <md-autocomplete flex
+                                                 ng-disabled="ctrl.isDisabled"
+                                                 md-no-cache="ctrl.noCache"
+                                                 md-selected-item="ctrl.selectedItem"
+                                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                                 md-search-text="ctrl.searchText"
+                                                 md-selected-item-change="ctrl.selectedItemChange(item)"
+                                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                                 md-item-text="item.display"
+                                                 md-min-length="0"
+                                                 placeholder="What is your favorite US state?">
+                                    <md-item-template>
                                     <span md-highlight-text="ctrl.searchText"
                                           md-highlight-flags="^i">{{item.display}}</span>
-                                </md-item-template>
-                                <md-not-found>
-                                    No states matching "{{ctrl.searchText}}" were found.
-                                    <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
-                                </md-not-found>
-                            </md-autocomplete>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No states matching "{{ctrl.searchText}}" were found.
+                                        <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                                    </md-not-found>
+                                </md-autocomplete>
+                                <md-autocomplete flex
+                                                 ng-disabled="ctrl.isDisabled"
+                                                 md-no-cache="ctrl.noCache"
+                                                 md-selected-item="ctrl.selectedItem"
+                                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                                 md-search-text="ctrl.searchText"
+                                                 md-selected-item-change="ctrl.selectedItemChange(item)"
+                                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                                 md-item-text="item.display"
+                                                 md-min-length="0"
+                                                 placeholder="What is your favorite US state?">
+                                    <md-item-template>
+                                    <span md-highlight-text="ctrl.searchText"
+                                          md-highlight-flags="^i">{{item.display}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No states matching "{{ctrl.searchText}}" were found.
+                                        <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                                    </md-not-found>
+                                </md-autocomplete>
+                                <md-autocomplete flex
+                                                 ng-disabled="ctrl.isDisabled"
+                                                 md-no-cache="ctrl.noCache"
+                                                 md-selected-item="ctrl.selectedItem"
+                                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                                 md-search-text="ctrl.searchText"
+                                                 md-selected-item-change="ctrl.selectedItemChange(item)"
+                                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                                 md-item-text="item.display"
+                                                 md-min-length="0"
+                                                 placeholder="What is your favorite US state?">
+                                    <md-item-template>
+                                    <span md-highlight-text="ctrl.searchText"
+                                          md-highlight-flags="^i">{{item.display}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No states matching "{{ctrl.searchText}}" were found.
+                                        <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                                    </md-not-found>
+                                </md-autocomplete>
+                            </div>
                             <br/>
                             <md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
                             <md-checkbox ng-model="ctrl.noCache">Disable caching of queries?</md-checkbox>
@@ -485,6 +528,11 @@
             self.selectedItemChange = selectedItemChange;
             self.searchTextChange = searchTextChange;
 
+            self.cities = loadAllCities();
+            self.cityQuerySearch = querySearch;
+            self.citySelectedItemChange = selectedItemChange;
+            self.citySearchTextChange = searchTextChange;
+
             self.newState = newState;
 
             function newState(state) {
@@ -532,6 +580,17 @@
               North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
               South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
               Wisconsin, Wyoming';
+
+                return allStates.split(/, +/g).map(function (state) {
+                    return {
+                        value: state.toLowerCase(),
+                        display: state
+                    };
+                });
+            }
+
+            function loadAllCities() {
+                var allStates = 'City 1,City 2,City 3';
 
                 return allStates.split(/, +/g).map(function (state) {
                     return {
