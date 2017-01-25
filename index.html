@@ -627,7 +627,7 @@
 
             function cityQuerySearch(query) {
                 console.log("Inside City Query Search////")
-                var results = query ? self.cities.filter(cityCreateFilterFor(query)) : self.cities,
+                var results = self.cities.filter(cityCreateFilterFor(query)),
                         deferred;
                 if (self.simulateQuery) {
                     deferred = $q.defer();
@@ -642,7 +642,7 @@
 
             function districtQuerySearch(query) {
                 console.log("Inside districtQuerySearch////")
-                var results = query ? self.districts.filter(districtCreateFilterFor(query)) : self.districts,
+                var results = self.districts.filter(districtCreateFilterFor(query)),
                         deferred;
                 if (self.simulateQuery) {
                     deferred = $q.defer();
@@ -779,10 +779,14 @@
 
                 return function filterFn(city) {
                     console.log("/////self.selectedStateId/////" + self.selectedStateId)
-                    if (self.selectedStateId) {
+                    if (self.selectedStateId && query) {
                         return ((angular.lowercase(city.cityName).indexOf(lowercaseQuery) === 0) && city.stateId == self.selectedStateId);
-                    } else {
+                    } else if (self.selectedStateId) {
+                        return (city.stateId == self.selectedStateId);
+                    } else if (query) {
                         return (angular.lowercase(city.cityName).indexOf(lowercaseQuery) === 0);
+                    } else {
+                        return true
                     }
                 };
 
@@ -793,10 +797,14 @@
 
                 return function filterFn(district) {
                     console.log("///self.selectedStateId////" + self.selectedStateId)
-                    if (self.selectedStateId) {
+                    if (self.selectedStateId && query) {
                         return ((angular.lowercase(district.districtName).indexOf(lowercaseQuery) === 0) && district.stateId == self.selectedStateId);
-                    } else {
+                    } else if (query) {
                         return (angular.lowercase(district.districtName).indexOf(lowercaseQuery) === 0);
+                    } else if (self.selectedStateId) {
+                        return (district.stateId == self.selectedStateId);
+                    } else {
+                        return true
                     }
                 };
 
