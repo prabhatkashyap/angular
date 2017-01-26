@@ -57,33 +57,33 @@
                     </h3>
                 </div>
             </md-toolbar>
+            <div  layout="row" layout-margin>
+                <md-input-container flex>
+                    <label>State</label>
+                    <md-select name="type" ng-model="user.state" required>
+                        <md-option ng-repeat="state in states" value="{{state.id}}">{{state.stateName}}</md-option>
+                    </md-select>
+                </md-input-container>
 
-            <md-input-container flex="50">
-                <label>State</label>
-                <md-select name="type" ng-model="user.state" required>
-                    <md-option ng-repeat="state in states" value="{{state.id}}">{{state.stateName}}</md-option>
-                </md-select>
-            </md-input-container>
+                <md-input-container flex>
+                    <label>City</label>
+                    <md-select name="type" ng-model="user.city" required>
+                        <md-option ng-repeat="city in filterCities(user.state)" value="{{city.id}}">
+                            {{city.cityName}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
 
-            <md-input-container flex="50">
-                <label>City</label>
-                <md-select name="type" ng-model="user.city" required>
-                    <md-option ng-repeat="city in filterCities(user.state)" value="{{city.id}}">
-                        {{city.cityName}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+                <md-input-container flex>
+                    <label>District</label>
+                    <md-select name="type" ng-model="user.district" required>
+                        <md-option ng-repeat="district in filterDistricts(user.state)" value="{{district.id}}">
+                            {{district.districtName}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
 
-            <md-input-container flex="50">
-                <label>District</label>
-                <md-select name="type" ng-model="user.district" required>
-                    <md-option ng-repeat="district in filterDistricts(user.state)" value="{{district.id}}">
-                        {{district.districtName}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-
-
+            </div>
         </md-content>
 
     </section>
