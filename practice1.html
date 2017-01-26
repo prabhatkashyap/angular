@@ -1,0 +1,198 @@
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="assets/css/angular-material.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body ng-app="myApp" ng-cloak>
+
+
+<div ng-controller="PracticeCtrl as ctrl" layout="column" style="height:100%;" ng-cloak>
+
+    <section layout="row" flex>
+
+        <md-sidenav
+                class="md-sidenav-left" style="width: 260px !important;"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-md')"
+                md-whiteframe="4">
+
+            <!--<md-toolbar class="md-theme-indigo">-->
+            <!--<h1 class="md-toolbar-tools">Sidenav Left</h1>-->
+            <!--</md-toolbar>-->
+            <md-content layout-padding ng-controller="LeftCtrl">
+                <!--<md-button ng-click="close()" class="md-primary" hide-gt-md>-->
+                <!--Close Sidenav Left-->
+                <!--</md-button>-->
+                <header class="nav-header">
+                    <a layout="row" layout-align="center center"
+                       ng-href="#" class="docs-logo" href="#">
+                        <img src="http://www.logospike.com/wp-content/uploads/2015/11/Logo_Image_01.png"
+                             style="width: 160px" alt="">
+                    </a>
+
+                    <h1 style="margin: 0px;text-align: center" class="ng-binding">
+                        Angular Demo</h1>
+                </header>
+                <div layout="column" layout-fill>
+                    <md-button>
+                        <a href="/">Home</a>
+                    </md-button>
+                    <md-button>
+                        <a href="/practice1.html">Pratice 1</a>
+                    </md-button>
+                </div>
+
+            </md-content>
+
+        </md-sidenav>
+
+
+        <md-content flex>
+            <md-toolbar md-scroll-shrink>
+                <div class="md-toolbar-tools">
+                    <h3>
+                        <span>Angular Demo</span>
+                    </h3>
+                </div>
+            </md-toolbar>
+
+            <md-input-container flex="50">
+                <label>State</label>
+                <md-select name="type" ng-model="user.state" required>
+                    <md-option ng-repeat="state in states" value="{{state.id}}">{{state.stateName}}</md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container flex="50">
+                <label>City</label>
+                <md-select name="type" ng-model="user.city" required>
+                    <md-option ng-repeat="city in filterCities(user.state)" value="{{city.id}}">
+                        {{city.cityName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container flex="50">
+                <label>District</label>
+                <md-select name="type" ng-model="user.district" required>
+                    <md-option ng-repeat="district in filterDistricts(user.state)" value="{{district.id}}">
+                        {{district.districtName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+
+        </md-content>
+
+    </section>
+
+</div>
+
+
+<!-- Angular Material requires Angular.js Libraries -->
+<script src="assets/js/angular.min.js"></script>
+<script src="assets/js/angular-animate.min.js"></script>
+<script src="assets/js/angular-aria.min.js"></script>
+<script src="assets/js/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="assets/js/angular-material.min.js"></script>
+
+<!-- Your application bootstrap  -->
+<script type="text/javascript">
+    /**
+     * You must include the dependency on 'ngMaterial'
+     */
+
+    (function () {
+        'use strict';
+        angular
+                .module('myApp', ['ngMaterial'])
+
+                .controller('PracticeCtrl', function ($scope, $http) {
+                    $scope.states = loadAllStates($http);
+                    $scope.cities = loadAllCities($http);
+                    $scope.districts = loadAllDistricts($http);
+
+                    function loadAllStates($http) {
+                        console.log("////Inside loadAllStates//////")
+                        var allStates = '';
+                        return $http.get("//api-dtserv.rhcloud.com/state")
+                                .then(function (response) {
+                                    $scope.states = response.data;
+                                });
+                    }
+
+                    function loadAllCities() {
+                        console.log("////Inside loadAllCities//////")
+
+                        var allCities = '';
+                        return $http.get("//api-dtserv.rhcloud.com/city")
+                                .then(function (response) {
+                                    $scope.cities = response.data;
+
+                                });
+                    }
+
+                    function loadAllDistricts() {
+                        console.log("////Inside loadAllDistricts//////")
+                        var allDistricts = '';
+                        return $http.get("//api-dtserv.rhcloud.com/district")
+                                .then(function (response) {
+                                    $scope.districts = response.data;
+                                });
+                    }
+
+                    $scope.filterCities = function (state) {
+                        if (state) {
+                            return $scope.cities.filter(cityCreateFilterFor(state))
+                        } else {
+                            return $scope.cities
+                        }
+                    };
+
+
+                    function cityCreateFilterFor(query) {
+
+                        return function filterFn(city) {
+                            return (city.stateId == query);
+                        };
+                    }
+
+                    function districtCreateFilterFor(query) {
+
+                        return function filterFn(district) {
+                            return (district.stateId == query);
+                        };
+                    }
+
+                    $scope.filterDistricts = function (state) {
+                        if (state) {
+                            return $scope.districts.filter(districtCreateFilterFor(state))
+                        } else {
+                            return $scope.districts
+                        }
+                    }
+
+
+                })
+
+                .
+                controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+
+
+                })
+    })();
+
+
+</script>
+
+</body>
+</html>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
+-->
